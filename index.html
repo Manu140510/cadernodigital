@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Caderno Digital</title>
+  <style>
+    * { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+    body {
+      margin: 0;
+      background-image: url(./randal.png);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .notebook {
+      width: 90%;
+      max-width: 900px;
+      height: 90vh;
+      background: #5608e638;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      color: rgb(255, 255, 255);
+    }
+    header {
+      padding: 16px;
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+      background: #5608e638;
+    }
+    .tabs {
+      display: flex;
+      background: #dcdcdc;
+    }
+    .tab {
+      flex: 1;
+      padding: 12px;
+      text-align: center;
+      cursor: pointer;
+      font-weight: 500;
+    }
+    .tab.active {
+      background: #ffffff3f;
+      border-bottom: 3px solid #4c13d18c;
+    }
+    .content {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+    }
+    .page {
+      display: none;
+      width: 100%;
+      height: 100%;
+    }
+    .page.active {
+      display: block;
+      background-color: #ffffff56;
+    }
+    textarea {
+      width: 100%;
+      height: 100%;
+      border: none;
+      resize: none;
+      outline: none;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <div class="notebook">
+    <header>🔖 𝓒𝓪𝓭𝓮𝓻𝓷𝓸 𝓓𝓲𝓰𝓲𝓽𝓪𝓵</header>
+
+    <div class="tabs">
+      <div class="tab active" onclick="openTab('Redação')">Redação</div>
+      <div class="tab" onclick="openTab('Anotações')">Anotações</div>
+      <div class="tab" onclick="openTab('Perguntas')">Perguntas</div>
+    </div>
+
+    <div class="content">
+      <div id="Redação" class="page active">
+        <textarea id="text-redacao" placeholder="Escreva seu cronograma aqui..."></textarea>
+      </div>
+      <div id="Anotações" class="page">
+        <textarea id="text-anotacoes" placeholder="Anote novas palavras aqui..."></textarea>
+      </div>
+      <div id="Perguntas" class="page">
+        <textarea id="text-perguntas" placeholder="Anotações de gramática..."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const tabs = document.querySelectorAll('.tab');
+    const pages = document.querySelectorAll('.page');
+
+    function openTab(id) {
+      tabs.forEach(tab => tab.classList.remove('active'));
+      pages.forEach(page => page.classList.remove('active'));
+
+      document.querySelector(`[onclick="openTab('${id}')"]`).classList.add('active');
+      document.getElementById(id).classList.add('active');
+    }
+
+    // salvar automaticamente
+    const areas = ['Redação', 'Anotações', 'Perguntas'];
+
+    areas.forEach(area => {
+      const textarea = document.getElementById(`text-${area}`);
+      textarea.value = localStorage.getItem(area) || '';
+
+      textarea.addEventListener('input', () => {
+        localStorage.setItem(area, textarea.value);
+      });
+    });
+  </script>
+</body>
+</html>

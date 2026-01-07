@@ -4,8 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Caderno Digital</title>
+
   <style>
     * { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+
     body {
       margin: 0;
       background-image: url(./randal.png);
@@ -14,6 +16,7 @@
       align-items: center;
       height: 100vh;
     }
+
     .notebook {
       width: 90%;
       max-width: 900px;
@@ -24,8 +27,9 @@
       display: flex;
       flex-direction: column;
       overflow: hidden;
-      color: rgb(255, 255, 255);
+      color: white;
     }
+
     header {
       padding: 16px;
       text-align: center;
@@ -33,10 +37,12 @@
       font-weight: bold;
       background: #5608e638;
     }
+
     .tabs {
       display: flex;
       background: #dcdcdc;
     }
+
     .tab {
       flex: 1;
       padding: 12px;
@@ -44,24 +50,29 @@
       cursor: pointer;
       font-weight: 500;
     }
+
     .tab.active {
       background: #ffffff3f;
       border-bottom: 3px solid #4c13d18c;
     }
+
     .content {
       flex: 1;
       padding: 20px;
       overflow-y: auto;
     }
+
     .page {
       display: none;
       width: 100%;
       height: 100%;
     }
+
     .page.active {
       display: block;
       background-color: #ffffff56;
     }
+
     textarea {
       width: 100%;
       height: 100%;
@@ -70,11 +81,41 @@
       outline: none;
       font-size: 16px;
       line-height: 1.6;
+      padding: 10px;
+    }
+
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      background: #ffffff2f;
+    }
+
+    button {
+      background: #4c13d1;
+      color: white;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    button:hover {
+      background: #3a0fb0;
+    }
+
+    .status {
+      font-size: 14px;
+      opacity: 0.8;
     }
   </style>
 </head>
+
 <body>
   <div class="notebook">
+
     <header>🔖 𝓒𝓪𝓭𝓮𝓻𝓷𝓸 𝓓𝓲𝓰𝓲𝓽𝓪𝓵</header>
 
     <div class="tabs">
@@ -85,20 +126,29 @@
 
     <div class="content">
       <div id="Redação" class="page active">
-        <textarea id="text-redacao" placeholder="Escreva seu cronograma aqui..."></textarea>
+        <textarea id="text-Redação" placeholder="Escreva seu cronograma aqui..."></textarea>
       </div>
+
       <div id="Anotações" class="page">
-        <textarea id="text-anotacoes" placeholder="Anote novas palavras aqui..."></textarea>
+        <textarea id="text-Anotações" placeholder="Anote novas palavras aqui..."></textarea>
       </div>
+
       <div id="Perguntas" class="page">
-        <textarea id="text-perguntas" placeholder="Anotações de gramática..."></textarea>
+        <textarea id="text-Perguntas" placeholder="Anotações de gramática..."></textarea>
       </div>
     </div>
+
+    <div class="footer">
+      <span class="status" id="status">Nada salvo ainda</span>
+      <button onclick="saveNotes()">💾 Salvar</button>
+    </div>
+
   </div>
 
   <script>
     const tabs = document.querySelectorAll('.tab');
     const pages = document.querySelectorAll('.page');
+    const status = document.getElementById('status');
 
     function openTab(id) {
       tabs.forEach(tab => tab.classList.remove('active'));
@@ -108,9 +158,9 @@
       document.getElementById(id).classList.add('active');
     }
 
-    // salvar automaticamente
     const areas = ['Redação', 'Anotações', 'Perguntas'];
 
+    // carregar dados salvos
     areas.forEach(area => {
       const textarea = document.getElementById(`text-${area}`);
       textarea.value = localStorage.getItem(area) || '';
@@ -119,6 +169,16 @@
         localStorage.setItem(area, textarea.value);
       });
     });
+
+    function saveNotes() {
+      areas.forEach(area => {
+        const textarea = document.getElementById(`text-${area}`);
+        localStorage.setItem(area, textarea.value);
+      });
+
+      status.textContent = '✅ Anotações salvas!';
+      setTimeout(() => status.textContent = 'Tudo salvo automaticamente', 2000);
+    }
   </script>
 </body>
 </html>
